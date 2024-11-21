@@ -1,16 +1,16 @@
 //
 //  AppDelegate.swift
-//  TrackerApp
+//  Tracker
 //
-//  Created by Ilya Kalin on 21.11.2024.
+//  Created by Ilya Kalin on 22.08.2024.
 //
 
 import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
+    
+    var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
