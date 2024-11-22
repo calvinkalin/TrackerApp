@@ -7,8 +7,8 @@
 
 import UIKit
 
-class SupplementaryViewHeader: UICollectionReusableView {
-    public let titleLabel = UILabel()
+final class SupplementaryViewHeader: UICollectionReusableView {
+    private let titleLabel = UILabel()
     static let identifier = "Header"
     
     override init(frame: CGRect) {

@@ -11,7 +11,7 @@ protocol SaveNameTrackerDelegate: AnyObject {
     func textFieldWasChanged(text: String)
 }
 
-class HabitNameCell: UICollectionViewCell {
+final class HabitNameCell: UICollectionViewCell {
     weak var delegate: SaveNameTrackerDelegate?
 
     static let cellIdentifier = "HabitNameCell"
@@ -36,6 +36,11 @@ class HabitNameCell: UICollectionViewCell {
         textField.layer.cornerRadius = 16
         textField.backgroundColor = UIColor(red: 230/255.0, green: 232/255.0, blue: 235/255.0, alpha: 0.3)
         textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: textField.frame.height))
+        textField.leftView = paddingView
+        textField.leftViewMode = .always
+        
         contentView.addSubview(textField)
 
         NSLayoutConstraint.activate([

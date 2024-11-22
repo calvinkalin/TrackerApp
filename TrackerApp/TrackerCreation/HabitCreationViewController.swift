@@ -116,6 +116,7 @@ class HabitCreationViewController: UIViewController {
     func setUpNavigationBar() {
         navigationBar = navigationController?.navigationBar
         navigationBar?.isHidden = false
+        navigationItem.hidesBackButton = true
         navigationItem.title = "Новая привычка"
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.titleTextAttributes = [.font: UIFont.systemFont(ofSize: 16, weight: .regular)]

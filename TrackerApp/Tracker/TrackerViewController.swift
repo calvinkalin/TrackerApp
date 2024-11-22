@@ -10,15 +10,15 @@ import UIKit
 final class TrackerViewController: UIViewController {
     
     // MARK: - Public Properties
-    lazy var currentCategories: [TrackerCategory] = {
+    private lazy var currentCategories: [TrackerCategory] = {
         filterCategoriesToShow()
     }()
     
-    var categories: [TrackerCategory] = []
-    var currentDate = Date()
-    var completedTrackers: [TrackerRecord] = []
+    private var categories: [TrackerCategory] = []
+    private var currentDate = Date()
+    private var completedTrackers: [TrackerRecord] = []
     
-    let collectionView: UICollectionView = {
+    private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         return collectionView
@@ -40,7 +40,7 @@ final class TrackerViewController: UIViewController {
     
     // MARK: - IBAction
     @objc
-    func didTapAddTrackerButton() {
+    private func didTapAddTrackerButton() {
         let createTrackerViewController = TrackerCreationViewController()
         createTrackerViewController.delegate = self
         let createTracker = UINavigationController(rootViewController: createTrackerViewController)
@@ -48,7 +48,7 @@ final class TrackerViewController: UIViewController {
     }
     
     @objc
-    func datePickerValueChanged(_ sender: UIDatePicker) {
+    private func datePickerValueChanged(_ sender: UIDatePicker) {
         let selectedDate = sender.date
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd.MM.yyyy"

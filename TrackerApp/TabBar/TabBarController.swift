@@ -16,7 +16,7 @@ final class TabBarViewController: UITabBarController {
         
     }
     
-    fileprivate func extractedFunc(_ trackerViewController: TrackerViewController) {
+    private func extractedFunc(_ trackerViewController: TrackerViewController) {
         trackerViewController.tabBarItem = UITabBarItem(
             title: "Трекеры",
             image: UIImage(named: "Trackers"),

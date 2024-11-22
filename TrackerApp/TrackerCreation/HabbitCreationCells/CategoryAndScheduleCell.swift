@@ -20,7 +20,7 @@ protocol ShowCategoriesDelegate: AnyObject {
     func showCategoriesViewController()
 }
 
-class CategoryAndScheduleCell: UICollectionViewCell, UITableViewDataSource, UITableViewDelegate {
+final class CategoryAndScheduleCell: UICollectionViewCell, UITableViewDataSource, UITableViewDelegate {
     
 
     static let cellIdentifier = "CategoryAndSchedule"
@@ -35,11 +35,9 @@ class CategoryAndScheduleCell: UICollectionViewCell, UITableViewDataSource, UITa
     
     private let items = ["Категория", "Расписание"]
 
-    
     var tableView = UITableView()
     var state: State? = .Habit
 
-    
     // MARK: - Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)

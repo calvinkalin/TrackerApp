@@ -40,6 +40,7 @@ final class ScheduleTableCell: UITableViewCell {
     // MARK: - Private Methods
     private func setupSwitch() {
         switchButton.setOn(false, animated: true)
+        switchButton.onTintColor = UIColor(named: "Blue")
         self.accessoryView = switchButton
     }
 }

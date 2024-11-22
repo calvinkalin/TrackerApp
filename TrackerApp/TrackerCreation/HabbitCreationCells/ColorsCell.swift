@@ -8,7 +8,7 @@
 import UIKit
 
 
-class ColorsCell: UICollectionViewCell {
+final class ColorsCell: UICollectionViewCell {
     static let cellIdentifier = "ColorCell"
 
     let colorView = UIView()

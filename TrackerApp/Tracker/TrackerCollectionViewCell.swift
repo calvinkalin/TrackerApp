@@ -14,17 +14,17 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     
     weak var counterDelegate: TrackerCounterDelegate?
     
-    let addButton = UIButton(type: .custom)
-    let card = UIView()
-    let circle = UIView()
-    let emojiLabel = UILabel()
-    let titleLabel = UILabel()
-    let pinImageView = UIImageView()
-    let daysCountLabel = UILabel()
+    private let addButton = UIButton(type: .custom)
+    private let card = UIView()
+    private let circle = UIView()
+    private let emojiLabel = UILabel()
+    private let titleLabel = UILabel()
+    private let pinImageView = UIImageView()
+    private let daysCountLabel = UILabel()
     
-    var color: UIColor?
-    var isPinned: Bool = false
-    var daysCount: Int = 0 {
+    private var color: UIColor?
+    private var isPinned: Bool = false
+    private var daysCount: Int = 0 {
         didSet {
             updateDaysCountLabel()
         }
@@ -79,7 +79,8 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             counterDelegate?.increaseTrackerCounter(id: id, date: currentDay)
             daysCount = counterDelegate?.calculateTimesTrackerWasCompleted(id: id) ?? daysCount
         } else {
-            addButton.setImage(UIImage(named: "Plus"), for: .normal)
+            addButton.setImage(UIImage(named: "Plus")?.withRenderingMode(.alwaysTemplate), for: .normal)
+            addButton.tintColor = .white
             addButton.backgroundColor = color
             guard let id = trackerInfo?.id,
                   let currentDay = trackerInfo?.currentDay else { return }
@@ -117,10 +118,11 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     
     private func updateAddButton() {
         if checkIfTrackerWasCompleted() {
-            addButton.setImage(UIImage(named: "done"), for: .normal)
+            addButton.setImage(UIImage(named: "DoneQM"), for: .normal)
             addButton.backgroundColor = color?.withAlphaComponent(0.3)
         } else {
-            addButton.setImage(UIImage(named: "plus"), for: .normal)
+            addButton.setImage(UIImage(named: "Plus")?.withRenderingMode(.alwaysTemplate), for: .normal)
+            addButton.tintColor = .white
             addButton.backgroundColor = color
         }
         addButton.layer.cornerRadius = 16
