@@ -54,7 +54,7 @@ class HabitCreationViewController: UIViewController {
         }
     }
     
-    var trackerCategory = "Новая папка(1)" {
+    var trackerCategory = "Важное" {
         didSet {
             checkIfSaveButtonCanBePressed()
 
