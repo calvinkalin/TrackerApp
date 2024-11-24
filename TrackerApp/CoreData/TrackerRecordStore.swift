@@ -5,7 +5,6 @@
 //  Created by Ilya Kalin on 23.11.2024.
 //
 
-import UIKit
 import CoreData
 
 protocol TrackerRecordStoreDelegate: AnyObject {
@@ -54,15 +53,6 @@ final class TrackerRecordStore: NSObject {
     }()
     
     // MARK: - Initializers
-    convenience override init() {
-        guard let appDelegate = (UIApplication.shared.delegate as? AppDelegate) else {
-            fatalError("Не удалось получить AppDelegate")
-        }
-        
-        let context = appDelegate.persistentContainer.viewContext
-        self.init(context: context)
-    }
-    
     init(context: NSManagedObjectContext) {
         self.context = context
     }

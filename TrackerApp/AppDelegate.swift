@@ -12,6 +12,21 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
+    
+    lazy var trackerCategoryStore: TrackerCategoryStore = {
+        let context = self.persistentContainer.viewContext
+        return TrackerCategoryStore(context: context)
+    }()
+    
+    lazy var trackerRecordStore: TrackerRecordStore = {
+        let context = self.persistentContainer.viewContext
+        return TrackerRecordStore(context: context)
+    }()
+
+    lazy var trackerStore: TrackerStore = {
+        let context = self.persistentContainer.viewContext
+        return TrackerStore(context: context)
+    }()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -36,7 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let container = NSPersistentContainer(name: "Tracker")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as? NSError {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
+                assertionFailure("Unresolved error \(error), \(error.userInfo)")
             }
         })
         return container
@@ -51,7 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 try context.save()
             } catch {
                 let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+                assertionFailure("Unresolved error \(nsError), \(nsError.userInfo)")
             }
         }
     }

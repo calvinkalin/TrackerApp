@@ -5,7 +5,6 @@
 //  Created by Ilya Kalin on 23.11.2024.
 //
 
-import UIKit
 import CoreData
 
 protocol TrackerCategoryStoreDelegate: AnyObject {
@@ -36,9 +35,8 @@ final class TrackerCategoryStore: NSObject {
     private var insertedIndexes: IndexSet?
     private var deletedIndexes: IndexSet?
     private var updatedIndexes: IndexSet?
-    
+        
     private let scheduleConvertor = ScheduleConvertor()
-    private let colorConvertor = UIColorConverter()
     
     private lazy var fetchedResultsController: NSFetchedResultsController<TrackerCategoryCoreData> = {
         let fetchRequest = TrackerCategoryCoreData.fetchRequest()
@@ -61,15 +59,6 @@ final class TrackerCategoryStore: NSObject {
     }()
     
     // MARK: - Initializers
-    convenience override init() {
-        guard let appDelegate = (UIApplication.shared.delegate as? AppDelegate) else {
-            fatalError("Не удалось получить AppDelegate")
-        }
-        
-        let context = appDelegate.persistentContainer.viewContext
-        self.init(context: context)
-    }
-    
     init(context: NSManagedObjectContext) {
         self.context = context
     }
@@ -120,7 +109,7 @@ final class TrackerCategoryStore: NSObject {
                 let emoji = trackerData.emoji,
                 let colorString = trackerData.color
             {
-                let color = colorConvertor.color(from: colorString)
+                let color = UIColorConverter.color(from: colorString)
                 let schedule = scheduleConvertor.getSchedule(from: trackerData.schedule)
                 let tracker = Tracker(
                     id: id,
@@ -174,16 +163,26 @@ extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
     {
         switch type {
         case .insert:
-            guard let indexPath = newIndexPath else { fatalError() }
+            guard let indexPath = newIndexPath else {
+                assertionFailure("IndexPath is nil for insert operation.")
+                return
+            }
             insertedIndexes?.insert(indexPath.item)
         case .delete:
-            guard let indexPath = newIndexPath else { fatalError() }
+            guard let indexPath = newIndexPath else {
+                assertionFailure("IndexPath is nil for delete operation.")
+                return
+            }
             deletedIndexes?.insert(indexPath.item)
         case .update:
-            guard let indexPath = newIndexPath else { fatalError() }
+            guard let indexPath = newIndexPath else {
+                assertionFailure("IndexPath is nil for update operation.")
+                return
+            }
             updatedIndexes?.insert(indexPath.item)
         default:
-            fatalError()
+            assertionFailure("Unsupported type: \(type).")
+            return
         }
     }
 }

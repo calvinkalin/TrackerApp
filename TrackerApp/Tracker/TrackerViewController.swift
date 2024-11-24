@@ -18,6 +18,10 @@ final class TrackerViewController: UIViewController {
     var currentDate = Date()
     var completedTrackers: [TrackerRecord] = []
     
+    var trackerStore: TrackerStore!
+    var trackerCategoryStore: TrackerCategoryStore!
+    var trackerRecordStore: TrackerRecordStore!
+    
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -30,13 +34,19 @@ final class TrackerViewController: UIViewController {
     private var navigationBar: UINavigationBar?
     private var datePicker = UIDatePicker()
     
-    private let trackerStore = TrackerStore()
-    private let trackerCategoryStore = TrackerCategoryStore()
-    private let trackerRecordStore = TrackerRecordStore()
-    
     // MARK: - Public Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return
+            assertionFailure("Не удалось получить AppDelegate")
+        }
+        
+        let context = appDelegate.persistentContainer.viewContext
+        
+        trackerStore = TrackerStore(context: context)
+        trackerCategoryStore = TrackerCategoryStore(context: context)
+        trackerRecordStore = TrackerRecordStore(context: context)
         
         setupCollectionView()
         setUpNavigationBar()
@@ -73,7 +83,11 @@ final class TrackerViewController: UIViewController {
     // MARK: - Private Methods
     
     private func createNewCategory() {
-        try? trackerCategoryStore.addNewCategory(name: "Важное")
+        do {
+            try trackerCategoryStore.addNewCategory(name: "Важное")
+        } catch {
+            print("Failed to add new category: \(error.localizedDescription)")
+        }
     }
     
     ///MARK: - Setup CollectionView

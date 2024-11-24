@@ -5,7 +5,6 @@
 //  Created by Ilya Kalin on 23.11.2024.
 //
 
-import UIKit
 import CoreData
 
 protocol TrackerStoreDelegate: AnyObject {
@@ -23,7 +22,6 @@ final class TrackerStore: NSObject {
     private var insertedIndexes: [IndexPath]?
     private var deletedIndexes: IndexSet?
     
-    private let uiColorConverter = UIColorConverter()
     private let scheduleConvertor = ScheduleConvertor()
     
     private lazy var fetchedResultsController: NSFetchedResultsController<TrackerCoreData> = {
@@ -47,15 +45,6 @@ final class TrackerStore: NSObject {
     }()
     
     // MARK: - Initializers
-    convenience override init() {
-        guard let appDelegate = (UIApplication.shared.delegate as? AppDelegate) else {
-            fatalError("Не удалось получить AppDelegate")
-        }
-        
-        let context = appDelegate.persistentContainer.viewContext
-        self.init(context: context)
-    }
-    
     init(context: NSManagedObjectContext) {
         self.context = context
     }
@@ -79,7 +68,7 @@ final class TrackerStore: NSObject {
         
         trackerCoreData.trackerId = tracker.id
         trackerCoreData.title = tracker.name
-        trackerCoreData.color = uiColorConverter.hexString(from: tracker.color)
+        trackerCoreData.color = UIColorConverter.hexString(from: tracker.color)
         trackerCoreData.emoji = tracker.emoji
         trackerCoreData.schedule = scheduleConvertor.convertScheduleToUInt16(from: tracker.schedule)
         
@@ -131,10 +120,16 @@ extension TrackerStore: NSFetchedResultsControllerDelegate {
     ) {
         switch type {
         case .insert:
-            guard let indexPath = newIndexPath else { fatalError() }
+            guard let indexPath = newIndexPath else {
+                assertionFailure("IndexPath is nil for insert operation.")
+                return
+            }
             insertedIndexes?.append(indexPath)
         case .delete:
-            guard let indexPath = newIndexPath else { fatalError() }
+            guard let indexPath = newIndexPath else {
+                assertionFailure("IndexPath is nil for delete operation.")
+                return
+            }
             deletedIndexes?.insert(indexPath.item)
         default:
             break
