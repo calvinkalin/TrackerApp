@@ -39,6 +39,16 @@ final class PlaceHolderView: UIView {
         // TODO:
     }
     
+    func setUpNoCategories() {
+        let image = UIImage(named: "Nothing")
+        imageView.image = image
+        
+        label.text = "Привычки и события можно объединить по смыслу"
+        label.lineBreakMode = .byWordWrapping
+        label.numberOfLines = 0
+        label.textAlignment = .center
+    }
+    
     // MARK: - Private Methods
     private func setupView() {
         imageView.translatesAutoresizingMaskIntoConstraints = false

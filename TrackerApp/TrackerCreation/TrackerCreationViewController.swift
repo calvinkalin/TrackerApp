@@ -28,9 +28,13 @@ class TrackerCreationViewController: UIViewController {
     func didTapHabitButton() {
         
         let vc = HabitCreationViewController()
+        vc.closeCreatingTrackerViewController = { [weak self] in
+            guard let self = self else {return}
+            self.dismiss(animated: true)
+        }
+        let navigationController = UINavigationController(rootViewController: vc)
         vc.creationDelegate = delegate
-        self.navigationController?.pushViewController(vc, animated: true)
-        
+        present(navigationController, animated: true)
     }
     
     @objc
