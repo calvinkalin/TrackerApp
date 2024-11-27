@@ -13,13 +13,16 @@ final class CategoryCreationViewController: UIViewController {
         didSet {
             switch saveButtonCanBePressed {
             case true:
-                saveButton.backgroundColor = .black
+                saveButton.backgroundColor = dynamicColor(.black, .white)
+                saveButton.setTitleColor(dynamicColor(.white, .black), for: .normal)
                 saveButton.isEnabled = true
             case false:
-                saveButton.backgroundColor = .lightGray
+                saveButton.backgroundColor = dynamicColor(.lightGray, .darkGray)
+                saveButton.setTitleColor(dynamicColor(.darkGray, .lightGray), for: .normal)
                 saveButton.isEnabled = false
             default:
-                saveButton.backgroundColor = .lightGray
+                saveButton.backgroundColor = dynamicColor(.lightGray, .darkGray)
+                saveButton.setTitleColor(dynamicColor(.darkGray, .lightGray), for: .normal)
                 saveButton.isEnabled = false
             }
         }
@@ -42,7 +45,7 @@ final class CategoryCreationViewController: UIViewController {
         
         self.title = "Новая категория"
         navigationItem.hidesBackButton = true
-        view.backgroundColor = .white
+        view.backgroundColor = .background
         
         setupSaveButton()
         setupTextField()
@@ -53,6 +56,13 @@ final class CategoryCreationViewController: UIViewController {
     }
     
     // MARK: - Private Methods
+    
+    private func dynamicColor(_ lightModeColor: UIColor, _ darkModeColor: UIColor) -> UIColor {
+        return UIColor { traitCollection in
+            return traitCollection.userInterfaceStyle == .dark ? darkModeColor : lightModeColor
+        }
+    }
+    
     @objc
     private func saveButtonTapped() {
         guard let text = categoryNameTextField.text else { return }
@@ -77,8 +87,8 @@ final class CategoryCreationViewController: UIViewController {
     private func setupSaveButton() {
         saveButton.setTitle("Готово", for: .normal)
         saveButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        saveButton.titleLabel?.textColor = .white
-        saveButton.backgroundColor = UIColor.gray.withAlphaComponent(0.3)
+        saveButton.titleLabel?.textColor = dynamicColor(.white, .black)
+        saveButton.backgroundColor = dynamicColor(.lightGray, .darkGray)
         saveButton.layer.cornerRadius = 16
         saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         saveButton.translatesAutoresizingMaskIntoConstraints = false

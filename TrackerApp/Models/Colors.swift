@@ -8,6 +8,11 @@
 import UIKit
 
 extension UIColor {
+    static var backgroundColor: UIColor { UIColor(named: "Background") ?? UIColor.white}
+    static var totalBlack: UIColor { UIColor(named: "totalBlack") ?? UIColor.black}
+    static var totalWhite: UIColor { UIColor(named: "totalWhite") ?? UIColor.white}
+    static var tableCellColor: UIColor { UIColor(named: "CellColor") ?? UIColor.lightGray}
+    
     static var color1: UIColor { UIColor(named: "Red") ?? UIColor.red}
     static var color2: UIColor { UIColor(named: "Orange") ?? UIColor.orange}
     static var color3: UIColor { UIColor(named: "Blue") ?? UIColor.blue}

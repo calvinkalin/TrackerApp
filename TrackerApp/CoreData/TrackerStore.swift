@@ -88,6 +88,50 @@ final class TrackerStore: NSObject {
         }
         return result
     }
+    
+    func updateTracker(tracker: Tracker, category: TrackerCategory) throws {
+        let trackerCategoryStore = TrackerCategoryStore(context: context)
+        
+        do {
+            let trackerCoreData = try fetchTracker(trackerId: tracker.id)
+            let categoryData = try trackerCategoryStore.fetchCategory(name: category.title)
+            trackerCoreData.title = tracker.name
+            trackerCoreData.emoji = tracker.emoji
+            trackerCoreData.color = UIColorConverter.hexString(from: tracker.color)
+            trackerCoreData.schedule = scheduleConvertor.convertScheduleToUInt16(from: tracker.schedule)
+            trackerCoreData.category = categoryData
+            if context.hasChanges {
+                try context.save()
+            }
+        } catch {
+            throw TrackerStoreError.fetchingTrackerError
+        }
+    }
+    
+    func deleteTracker(tracker: Tracker) throws {
+        do {
+            let tracker = try fetchTracker(trackerId: tracker.id)
+            context.delete(tracker)
+            if context.hasChanges {
+                try context.save()
+            }
+        } catch {
+            throw TrackerStoreError.fetchingTrackerError
+        }
+    }
+    
+    func pinTracker(tracker: Tracker) throws {
+        let willBePinned = tracker.isPinned ? false : true
+        do {
+            let trackerCoreData = try fetchTracker(trackerId: tracker.id)
+            trackerCoreData.isPinned = willBePinned
+            if context.hasChanges {
+                try context.save()
+            }
+        } catch {
+            throw TrackerStoreError.fetchingTrackerError
+        }
+    }
 }
 
 //MARK: - NSFetchedResultsControllerDelegate

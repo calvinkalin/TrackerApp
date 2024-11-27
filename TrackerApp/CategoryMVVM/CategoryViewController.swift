@@ -21,7 +21,7 @@ final class CategoryViewController: UIViewController {
         
         self.title = "Категория"
         navigationItem.hidesBackButton = true
-        view.backgroundColor = .white
+        view.backgroundColor = .background
         
         setupButton()
         setupTableView()
@@ -44,9 +44,18 @@ final class CategoryViewController: UIViewController {
         tableView.backgroundView = backgroundView
     }
     
+    private func dynamicColor(_ lightModeColor: UIColor, _ darkModeColor: UIColor) -> UIColor {
+        return UIColor { traitCollection in
+            return traitCollection.userInterfaceStyle == .dark ? darkModeColor : lightModeColor
+        }
+    }
+    
     private func setupButton() {
         createCategoryButton.setTitle("Добавить категорию", for: .normal)
-        createCategoryButton.backgroundColor = .black
+        let buttonBackgroundColor = dynamicColor(.black, .white)
+        let buttonTextColor = dynamicColor(.white, .black)
+        createCategoryButton.setTitleColor(buttonTextColor, for: .normal)
+        createCategoryButton.backgroundColor = buttonBackgroundColor
         createCategoryButton.layer.cornerRadius = 16
         createCategoryButton.addTarget(self, action: #selector(createCategoryButtonTapped), for: .touchUpInside)
         createCategoryButton.translatesAutoresizingMaskIntoConstraints = false

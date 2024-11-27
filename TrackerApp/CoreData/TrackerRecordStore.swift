@@ -85,6 +85,16 @@ final class TrackerRecordStore: NSObject {
         try context.save()
     }
     
+    func calculateCompletedTrackers() throws -> Int {
+        let request = TrackerRecordCoreData.fetchRequest()
+        do {
+            let count = try context.count(for: request)
+            return count
+        } catch {
+            throw TrackerRecordStoreError.fetchTrackerRecordError
+        }
+    }
+    
     // MARK: - Private Methods
     private func fetchTrackerRecord(trackerId: UUID, date: Date) throws -> TrackerRecordCoreData {
         let calendar = Calendar.current

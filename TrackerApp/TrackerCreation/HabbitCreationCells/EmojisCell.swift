@@ -31,6 +31,16 @@ final class EmojisCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Public Methods
+    func setEmoji(with string: String) {
+        label.text = string
+    }
+    
+    func getEmoji() -> String {
+        guard let text = label.text else { return String() }
+        return text
+    }
+    
     // MARK: - Private Methods
     private func setupLabel() {
         label.font = UIFont.systemFont(ofSize: 32, weight: .bold)

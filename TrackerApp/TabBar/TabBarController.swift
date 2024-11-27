@@ -18,7 +18,7 @@ final class TabBarViewController: UITabBarController {
     
     private func extractedFunc(_ trackerViewController: TrackerViewController) {
         trackerViewController.tabBarItem = UITabBarItem(
-            title: "Трекеры",
+            title: NSLocalizedString("trackers", comment: ""),
             image: UIImage(named: "Trackers"),
             selectedImage: nil
         )
@@ -28,15 +28,17 @@ final class TabBarViewController: UITabBarController {
         let trackerViewController = TrackerViewController()
         extractedFunc(trackerViewController)
         
+        let trackersNavViewController = UINavigationController(rootViewController: trackerViewController)
+        
         let statisticsViewController = StatisticsViewController()
         statisticsViewController.tabBarItem = UITabBarItem(
-        title: "Статистика",
+        title: NSLocalizedString("statistics", comment: ""),
         image: UIImage(named: "Statistics"),
         selectedImage: nil
         )
         
-        let navigationViewController = UINavigationController(rootViewController: trackerViewController)
+        let statisticsNavViewController = UINavigationController(rootViewController: statisticsViewController)
         
-        self.viewControllers = [navigationViewController, statisticsViewController]
+        self.viewControllers = [trackersNavViewController, statisticsNavViewController]
     }
 }

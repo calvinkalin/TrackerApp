@@ -31,6 +31,15 @@ final class ColorsCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Public Methods
+    func setColor(with color: UIColor) {
+        colorView.backgroundColor = color
+    }
+    
+    func getColor() -> UIColor {
+        guard let color = colorView.backgroundColor else { return UIColor() }
+        return color
+    }
     // MARK: - Private Methods
     private func setupColorView() {
         colorView.layer.cornerRadius = 8

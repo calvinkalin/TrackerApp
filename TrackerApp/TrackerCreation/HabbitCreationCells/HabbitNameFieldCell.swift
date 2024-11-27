@@ -31,8 +31,12 @@ final class HabitNameCell: UICollectionViewCell {
         delegate?.textFieldWasChanged(text: textField.text ?? "")
     }
     
+    func setTrackerNameTextField(with string: String) {
+        textField.text = string
+    }
+    
     private func setupTextField() {
-        textField.placeholder = "Введите название трекера"
+        textField.placeholder = NSLocalizedString("trackerCreation.enterTitle", comment: "")
         textField.layer.cornerRadius = 16
         textField.backgroundColor = UIColor(red: 230/255.0, green: 232/255.0, blue: 235/255.0, alpha: 0.3)
         textField.translatesAutoresizingMaskIntoConstraints = false
