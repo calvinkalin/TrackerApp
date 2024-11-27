@@ -53,9 +53,7 @@ final class TrackerViewController: UIViewController {
         
         trackerStore.delegate = self
         trackerRecordStore.delegate = self
-        
-        createNewCategory()
-        
+                
         categories = trackerCategoryStore.categories
         completedTrackers = trackerRecordStore.completedTrackers
         updateCollectionAccordingToDate()
@@ -82,9 +80,9 @@ final class TrackerViewController: UIViewController {
     
     // MARK: - Private Methods
     
-    private func createNewCategory() {
+    private func createNewCategory(categoryName: String) {
         do {
-            try trackerCategoryStore.addNewCategory(name: "Важное")
+            try trackerCategoryStore.addNewCategory(name: categoryName)
         } catch {
             print("Failed to add new category: \(error.localizedDescription)")
         }

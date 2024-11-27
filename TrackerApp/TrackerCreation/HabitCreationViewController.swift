@@ -18,7 +18,7 @@ class HabitCreationViewController: UIViewController {
     weak var configureUIDelegate: ConfigureUIForTrackerCreationProtocol?
     weak var creationDelegate: TrackerCreationDelegate?
 
-
+    var closeCreatingTrackerViewController: (() -> ())?
     
     enum Section: Int, CaseIterable {
         case habitName
@@ -54,7 +54,7 @@ class HabitCreationViewController: UIViewController {
         }
     }
     
-    var trackerCategory = "Важное" {
+    var trackerCategory: TrackerCategory? {
         didSet {
             checkIfSaveButtonCanBePressed()
 
@@ -177,13 +177,16 @@ class HabitCreationViewController: UIViewController {
     @objc
     func cancelButtonTapped() {
         dismiss(animated: true, completion: nil)
+        closeCreatingTrackerViewController?()
     }
     
     @objc
     func saveButtonTapped() {
         guard let name = trackerName,
               let color = selectedColor,
-              let emoji = selectedEmoji else { return }
+              let emoji = selectedEmoji,
+              let categoryTitle = trackerCategory?.title
+        else { return }
         let tracker = Tracker(
             name: name,
             color: color,
@@ -191,10 +194,9 @@ class HabitCreationViewController: UIViewController {
             schedule: selectedWeekDays,
             state: .Habit
         )
-        print("Tracker создан: \(tracker), \(trackerCategory)")
 
         
-        creationDelegate?.createTracker(tracker: tracker, category: trackerCategory)
+        creationDelegate?.createTracker(tracker: tracker, category: categoryTitle)
         dismiss(animated: true, completion: nil)
     }
     
@@ -257,6 +259,7 @@ extension HabitCreationViewController: UICollectionViewDataSource {
             }
             configureUIDelegate?.configureCategoryAndScheduleCell(cell: cell)
             cell.scheduleDelegate = self
+            cell.categoriesDelegate = self
             return cell
         case Section.emojis.rawValue:
             return configureEmojiCell(cellForItemAt: indexPath)
@@ -401,7 +404,6 @@ extension HabitCreationViewController: SaveNameTrackerDelegate {
 
 extension HabitCreationViewController: ShowScheduleDelegate {
     
-    // MARK: - Public Methods
     func showShowScheduleViewController(viewController: ScheduleViewController) {
         viewController.scheduleDelegate = self
         viewController.selectedDays = selectedWeekDays
@@ -475,5 +477,29 @@ extension HabitCreationViewController: ConfigureUIForTrackerCreationProtocol {
         } else {
             saveButtonCanBePressed = false
         }
+    }
+}
+
+extension HabitCreationViewController: CategoryWasSelectedProtocol {
+    func categoryWasSelected(category: TrackerCategory) {
+        trackerCategory = category
+
+        if let cell = collectionView.cellForItem(at: IndexPath(row: 0, section: 1)) as? CategoryAndScheduleCell  {
+            cell.updateSubtitleLabel(
+                forCellAt: IndexPath(row: 0, section: 0),
+                text: trackerCategory?.title ?? "")
+        }
+    }
+}
+
+extension HabitCreationViewController: ShowCategoriesDelegate {
+    func showCategoriesViewController(viewController: CategoryViewController) {
+
+        if let trackerCategory = trackerCategory {
+            viewController.categoriesViewModel.selectedCategory = CategoryViewModel(title: trackerCategory.title, trackers: trackerCategory.trackers)
+        }
+        viewController.categoriesViewModel.categoryWasSelectedDelegate = self
+
+        navigationController?.pushViewController(viewController, animated: true)
     }
 }
