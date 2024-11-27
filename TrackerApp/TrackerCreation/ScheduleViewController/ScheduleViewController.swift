@@ -8,7 +8,7 @@
 import UIKit
 
 // MARK: - Constants
-private enum Constants {
+private enum rowConstants {
     static let numberOfRowsInSection: Int = 7
 }
 
@@ -27,9 +27,9 @@ final class ScheduleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "Расписание"
+        self.title = NSLocalizedString("schedule", comment: "")
         navigationItem.hidesBackButton = true
-        view.backgroundColor = .white
+        view.backgroundColor = .backgroundColor
         
         setupSaveButton()
         setupTableView()
@@ -37,9 +37,9 @@ final class ScheduleViewController: UIViewController {
     
     // MARK: - IBAction
     @objc
-    private func saveButtonTapped() {
-        scheduleDelegate?.saveSelectedDays(selectedDays: selectedDays)
+    private func saveButtonPressed() {
         navigationController?.popViewController(animated: true)
+        scheduleDelegate?.saveSelectedDays(selectedDays: selectedDays)
         
     }
     
@@ -54,11 +54,21 @@ final class ScheduleViewController: UIViewController {
     }
     
     // MARK: - Private Methods
+    private func dynamicColor(_ lightModeColor: UIColor, _ darkModeColor: UIColor) -> UIColor {
+        return UIColor { traitCollection in
+            return traitCollection.userInterfaceStyle == .dark ? darkModeColor : lightModeColor
+        }
+    }
+    
     private func setupSaveButton() {
-        saveButton.setTitle("Готово", for: .normal)
-        saveButton.backgroundColor = .black
+        saveButton.setTitle(NSLocalizedString("done", comment: ""), for: .normal)
+        let buttonBackgroundColor = dynamicColor(.black, .white)
+        let buttonTextColor = dynamicColor(.white, .black)
+        saveButton.setTitleColor(buttonTextColor, for: .normal)
+        saveButton.backgroundColor = buttonBackgroundColor
         saveButton.layer.cornerRadius = 16
-        saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+        saveButton.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
+        saveButton.accessibilityIdentifier = "saveSchedule"
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(saveButton)
         
@@ -94,8 +104,8 @@ final class ScheduleViewController: UIViewController {
         cell.prepareForReuse()
         cell.configButton(with: indexPath.row, action: #selector(switchChanged(_:)), controller: self)
         
-        let lastCell = indexPath.row == Constants.numberOfRowsInSection - 1
-        let firstCell = indexPath.row == Constants.numberOfRowsInSection - 7
+        let lastCell = indexPath.row == rowConstants.numberOfRowsInSection - 1
+        let firstCell = indexPath.row == rowConstants.numberOfRowsInSection - 7
         
         if lastCell {
             cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: tableView.bounds.width)
@@ -115,7 +125,7 @@ final class ScheduleViewController: UIViewController {
 //MARK: - DataSource
 extension ScheduleViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Constants.numberOfRowsInSection
+        return rowConstants.numberOfRowsInSection
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -130,6 +140,6 @@ extension ScheduleViewController: UITableViewDataSource {
 //MARK: - Delegate
 extension ScheduleViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 75
+        return CellSize.defaultCellHeight
     }
 }
