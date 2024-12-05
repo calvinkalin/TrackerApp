@@ -22,7 +22,7 @@ final class CategoryAndScheduleTableCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = UIColor.gray.withAlphaComponent(0.3)
+        backgroundColor = .background
         accessoryType = .disclosureIndicator
         layer.masksToBounds = true
         layer.cornerRadius = 16
@@ -50,6 +50,10 @@ final class CategoryAndScheduleTableCell: UITableViewCell {
             subtitleLabel.text = ""
             stackView.removeArrangedSubview(subtitleLabel)
         }
+    }
+    
+    func setTitleLabelText(with string: String) {
+        titleLabel.text = NSLocalizedString("\(string)", comment: "")
     }
     
     // MARK: - Private Methods

@@ -31,4 +31,13 @@ final class UIColorConverter {
             alpha: CGFloat(1.0)
         )
     }
+    
+    func isEqual(color1: UIColor, to color2: UIColor) -> Bool {
+        let hex1 = UIColorConverter.hexString(from: color1)
+        let hex2 = UIColorConverter.hexString(from: color2)
+        if hex1 == hex2 {
+            return true
+        }
+        return false
+    }
 }

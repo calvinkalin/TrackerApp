@@ -7,7 +7,16 @@
 
 import UIKit
 
+enum PlaceHolderState {
+    case noCategories
+    case noTrackers
+    case noSearchResult
+    case noStatistic
+}
+
 final class PlaceHolderView: UIView {
+    // MARK: - Public Properties
+    var state: PlaceHolderState = .noTrackers
     
     // MARK: - Private Properties
     private var imageView = UIImageView()
@@ -25,25 +34,46 @@ final class PlaceHolderView: UIView {
     }
     
     // MARK: - Public Methods
-    func setupNoTrackersState() {
-        imageView.image = UIImage(named: "Nothing")
-        label.text = "Что будем отслеживать"
+    func configurePlaceHolder() {
+        switch state {
+        case .noTrackers:
+            setUpNoTrackersState()
+        case .noCategories:
+            setUpNoCategories()
+        case .noSearchResult:
+            setUpNoSearchResultsState()
+        case .noStatistic:
+            setUpNoStatisticState()
+        }
     }
     
-    func setupNoSearchResultsState() {
-        imageView.image = UIImage(named: "notFound")
-        label.text = "Ничего не найдено"
+    func setUpNoTrackersState() {
+        let image = UIImage(named: "Nothing")
+        imageView.image = image
+        label.text = NSLocalizedString("placeholder.noTrackers", comment: "")
     }
     
-    func setupNoStatisticState() {
-        // TODO:
+    func setUpNoSearchResultsState() {
+        let image = UIImage(named: "notFound")
+        imageView.image = image
+        
+        label.text = NSLocalizedString("placeholder.noSearchResults", comment: "")
     }
     
     func setUpNoCategories() {
         let image = UIImage(named: "Nothing")
         imageView.image = image
         
-        label.text = "Привычки и события можно объединить по смыслу"
+        label.text = NSLocalizedString("placeholder.noCategories", comment: "")
+        label.lineBreakMode = .byWordWrapping
+        label.numberOfLines = 0
+        label.textAlignment = .center
+    }
+    
+    func setUpNoStatisticState() {
+        let image = UIImage(named: "noStatistic")
+        imageView.image = image
+        label.text = NSLocalizedString("placeholder.noStatistics", comment: "")
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
         label.textAlignment = .center
@@ -63,10 +93,10 @@ final class PlaceHolderView: UIView {
         
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         addSubview(label)
         
         NSLayoutConstraint.activate([
-            label.heightAnchor.constraint(equalToConstant: 18),
             label.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
             label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
